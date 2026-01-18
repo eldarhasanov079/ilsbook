@@ -3,8 +3,11 @@ import { Link, useParams } from "react-router-dom";
 import { units } from "../data/listenings";
 
 const getAssetUrl = (path: string): string => {
+  // Vite's BASE_URL already includes trailing slash (e.g., "/ilsbook/")
   const baseUrl = (import.meta as any).env?.BASE_URL || "/";
-  return `${baseUrl}${path.replace(/^\//, "")}`;
+  // Remove leading slash from path if present, then combine with base
+  const cleanPath = path.replace(/^\//, "");
+  return `${baseUrl}${cleanPath}`;
 };
 
 export default function Unit() {
@@ -14,36 +17,53 @@ export default function Unit() {
 
   if (!tracks) {
     return (
-      <div style={{ padding: 24 }}>
-        <h1>Unit not found</h1>
-        <Link to="/">Back to all units</Link>
+      <div className="unit-page">
+        <div className="error-state">
+          <h2>Unit not found</h2>
+          <Link to="/" className="btn-primary">← Back to Listenings</Link>
+        </div>
       </div>
     );
   }
 
   return (
-    <div style={{ padding: 24 }}>
-      <Link to="/">← Back</Link>
-      <h1>Unit {unitNum}</h1>
+    <div className="unit-page">
+      <Link to="/" className="back-link" aria-label="Back to listenings">
+        ← Back to Listenings
+      </Link>
+      
+      <div className="page-header">
+        <h2 className="page-title">Unit {unitNum}</h2>
+      </div>
 
-      <ul style={{ paddingLeft: 18 }}>
-        {tracks.map((t) => (
-          <li key={t.file} style={{ marginBottom: 16 }}>
-            <div style={{ marginBottom: 6 }}>{t.title}</div>
-
-            <audio controls preload="none" style={{ width: "100%", maxWidth: 520 }}>
-              <source src={getAssetUrl(t.file)} type="audio/mpeg" />
-              Your browser does not support the audio element.
-            </audio>
-
-            <div style={{ marginTop: 6 }}>
-              <a href={getAssetUrl(t.file)} download>
-                Download
-              </a>
+      <div className="tracks-list" role="list">
+        {tracks.map((t, index) => (
+          <div key={t.file} className="track-item" role="listitem">
+            <h3 className="track-title">{t.title}</h3>
+            
+            <div className="audio-container">
+              <audio 
+                controls 
+                preload="none" 
+                className="audio-player"
+                aria-label={`Audio player for ${t.title}`}
+              >
+                <source src={getAssetUrl(t.file)} type="audio/mpeg" />
+                Your browser does not support the audio element.
+              </audio>
             </div>
-          </li>
+
+            <a 
+              href={getAssetUrl(t.file)} 
+              download 
+              className="download-link"
+              aria-label={`Download ${t.title}`}
+            >
+              Download MP3
+            </a>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
