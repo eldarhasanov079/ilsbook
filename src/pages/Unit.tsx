@@ -2,6 +2,11 @@ import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { units } from "../data/listenings";
 
+const getAssetUrl = (path: string): string => {
+  const baseUrl = (import.meta as any).env?.BASE_URL || "/";
+  return `${baseUrl}${path.replace(/^\//, "")}`;
+};
+
 export default function Unit() {
   const { unitId } = useParams();
   const unitNum = Number(unitId);
@@ -27,12 +32,12 @@ export default function Unit() {
             <div style={{ marginBottom: 6 }}>{t.title}</div>
 
             <audio controls preload="none" style={{ width: "100%", maxWidth: 520 }}>
-              <source src={t.file} type="audio/mpeg" />
+              <source src={getAssetUrl(t.file)} type="audio/mpeg" />
               Your browser does not support the audio element.
             </audio>
 
             <div style={{ marginTop: 6 }}>
-              <a href={t.file} download>
+              <a href={getAssetUrl(t.file)} download>
                 Download
               </a>
             </div>
