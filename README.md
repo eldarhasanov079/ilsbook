@@ -9,23 +9,3 @@ This textbook is a **CEFR B1** teaching resource for undergraduates: listening, 
 **This repository** hosts the companion website: unit listening tracks, downloads, and pages about the book and the author.
 
 **Live site:** [ilsbook on GitHub Pages](https://eldarhasanov079.github.io/ilsbook/)
-
----
-
-## Local development
-
-```bash
-npm install
-npm run dev
-```
-
-Then open the URL shown in the terminal (typically `http://localhost:5173`).
-
-| Command        | Purpose              |
-| -------------- | -------------------- |
-| `npm run build` | Production build     |
-| `npm run preview` | Preview the build  |
-| `npm run lint`  | Run ESLint           |
-| `npm run deploy` | Publish to `gh-pages` (after `npm run build`) |
-
-Stack: **React**, **Vite**, **React Router**.
